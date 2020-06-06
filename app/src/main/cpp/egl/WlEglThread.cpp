@@ -34,7 +34,7 @@ void * eglThreadImpl(void *context)
             {
                 LOGD("eglthread call surfaceChange");
                 wlEglThread->isChange = false;
-                glViewport(0, 0, 720, 1280);
+                glViewport(0, 0, wlEglThread->surfaceWidth, wlEglThread->surfaceHeight);
                 wlEglThread->isStart = true;
             }
 
