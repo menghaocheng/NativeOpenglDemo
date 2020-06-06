@@ -26,8 +26,20 @@ public:
     bool isStart = false;
 
     int surfaceWidth = 0;
-
     int surfaceHeight = 0;
+
+    typedef void(*OnCreate)(void *);
+    OnCreate onCreate;
+    void *onCreteCtx;
+
+    typedef void(*OnChange)(int width, int height, void *);
+    OnChange onChange;
+    void *onChangeCtx;
+
+    typedef void(*OnDraw)(void *);
+    OnDraw onDraw;
+    void *onDrawCtx;
+
 
 
 public:
@@ -37,6 +49,12 @@ public:
     void onSurfaceCreate(EGLNativeWindowType window);
 
     void onSurfaceChange(int width, int height);
+
+    void callBackOnCreate(OnCreate onCreate, void *ctx);
+
+    void callBackOnChange(OnChange onChange, void *ctx);
+
+    void callBackOnDraw(OnDraw onDraw, void *ctx);
 
 
 
