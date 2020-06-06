@@ -1,5 +1,5 @@
 //
-// Created by Administrator on 2020/6/6.
+// Created by yangw on 2019-2-17.
 //
 
 #ifndef NATIVEOPENGLDEMO_WLEGLHELPER_H
