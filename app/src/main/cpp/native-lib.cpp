@@ -25,9 +25,10 @@ int program;
 GLint vPosition;
 
 float vertexs[] = {
-        -1,-1,
         1,-1,
-        -1,1,
+        1,1,
+        -1,-1,
+        -1,1
 
 };
 
@@ -65,7 +66,7 @@ void callback_SurfaceDraw(void *ctx)
 
     glEnableVertexAttribArray(vPosition);
     glVertexAttribPointer(vPosition, 2, GL_FLOAT, false, 8, vertexs);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 
