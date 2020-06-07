@@ -88,6 +88,7 @@ void WlEglThread::onSurfaceChange(int width, int height) {
     isChange = true;
     surfaceWidth = width;
     surfaceHeight = height;
+    notifyRender();
 }
 
 void WlEglThread::callBackOnCreate(WlEglThread::OnCreate onCreate, void *ctx) {
