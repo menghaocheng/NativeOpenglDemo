@@ -1,5 +1,5 @@
 //
-// Created by Administrator on 2020/6/6.
+// Created by yangw on 2019-2-17.
 //
 
 #ifndef NATIVEOPENGLDEMO_WLEGLTHREAD_H
@@ -12,6 +12,8 @@
 #include <unistd.h>
 #include "GLES2/gl2.h"
 
+#define OPENGL_RENDER_AUTO 1
+#define OPENGL_RENDER_HANDLE 2
 
 class WlEglThread {
 
@@ -40,6 +42,10 @@ public:
     OnDraw onDraw;
     void *onDrawCtx;
 
+    int renderType = OPENGL_RENDER_AUTO;
+
+    pthread_mutex_t pthread_mutex;
+    pthread_cond_t pthread_cond;
 
 
 public:
@@ -55,6 +61,10 @@ public:
     void callBackOnChange(OnChange onChange, void *ctx);
 
     void callBackOnDraw(OnDraw onDraw, void *ctx);
+
+    void setRenderType(int renderType);
+
+    void notifyRender();
 
 
 

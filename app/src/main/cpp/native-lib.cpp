@@ -40,6 +40,7 @@ Java_com_ywl5320_opengl_NativeOpengl_surfaceCreate(JNIEnv *env, jobject instance
 
     nativeWindow = ANativeWindow_fromSurface(env, surface);
     wlEglThread = new WlEglThread();
+    wlEglThread->setRenderType(OPENGL_RENDER_HANDLE);
     wlEglThread->callBackOnCreate(callback_SurfaceCrete, wlEglThread);
     wlEglThread->callBackOnChange(callback_SurfacChange, wlEglThread);
     wlEglThread->callBackOnDraw(callback_SurfaceDraw, wlEglThread);
@@ -56,6 +57,9 @@ Java_com_ywl5320_opengl_NativeOpengl_surfaceChange(JNIEnv *env, jobject instance
     if(wlEglThread != NULL)
     {
         wlEglThread->onSurfaceChange(width, height);
+
+        usleep(1000000);
+        wlEglThread->notifyRender();
     }
 
 }
