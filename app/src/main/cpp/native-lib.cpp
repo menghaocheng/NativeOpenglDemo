@@ -10,26 +10,48 @@ ANativeWindow *nativeWindow = NULL;
 WlEglThread *wlEglThread = NULL;
 
 
-const char *vertex = "attribute vec4 a_position;\n"
-                     "\n"
-                     "void main(){\n"
-                     "    gl_Position = a_position;\n"
+const char *vertex = "attribute vec4 v_Position;\n"
+                     "attribute vec2 f_Position;\n"
+                     "varying vec2 ft_Position;\n"
+                     "void main() {\n"
+                     "    ft_Position = f_Position;\n"
+                     "    gl_Position = v_Position;\n"
                      "}";
+
+
 const char *fragment = "precision mediump float;\n"
-                       "\n"
-                       "void main(){\n"
-                       "    gl_FragColor = vec4(1f,0f,0f,1f);\n"
+                       "varying vec2 ft_Position;\n"
+                       "uniform sampler2D sTexture;\n"
+                       "void main() {\n"
+                       "    gl_FragColor=texture2D(sTexture, ft_Position);\n"
                        "}";
 
 int program;
 GLint vPosition;
+GLint fPosition;
+GLint sampler;
+GLuint textureId;
+
+
+int w;
+int h;
+void *pixels = NULL;
+
+
+
 
 float vertexs[] = {
         1,-1,
         1,1,
         -1,-1,
         -1,1
+};
 
+float fragments[] ={
+        1,1,
+        1,0,
+        0,1,
+        0,0
 };
 
 
@@ -41,10 +63,23 @@ void callback_SurfaceCrete(void *ctx)
 
     program = createProgrm(vertex, fragment);
     LOGD("opengl program is %d", program);
-    vPosition = glGetAttribLocation(program, "a_position");
-    if(vPosition <= 0){
-        LOGE("vPosition is %d, %s", vPosition, strerror(errno));
+    vPosition = glGetAttribLocation(program, "v_Position");//顶点坐标
+    fPosition = glGetAttribLocation(program, "f_Position");//纹理坐标
+    sampler = glGetUniformLocation(program, "sTexture");//2D纹理
+
+    glGenTextures(1, &textureId);
+
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    if(pixels != NULL)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     }
+    glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -64,9 +99,20 @@ void callback_SurfaceDraw(void *ctx)
 
     glUseProgram(program);
 
+    glActiveTexture(GL_TEXTURE5);
+    glUniform1i(sampler, 5);
+
+    glBindTexture(GL_TEXTURE_2D, textureId);
+
     glEnableVertexAttribArray(vPosition);
     glVertexAttribPointer(vPosition, 2, GL_FLOAT, false, 8, vertexs);
+
+    glEnableVertexAttribArray(fPosition);
+    glVertexAttribPointer(fPosition, 2, GL_FLOAT, false, 8, fragments);
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -101,4 +147,20 @@ Java_com_ywl5320_opengl_NativeOpengl_surfaceChange(JNIEnv *env, jobject instance
         wlEglThread->notifyRender();
     }
 
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_ywl5320_opengl_NativeOpengl_imgData(JNIEnv *env, jobject instance, jint width, jint height,
+                                             jint length, jbyteArray data_) {
+    jbyte *data = env->GetByteArrayElements(data_, NULL);
+
+
+    w = width;
+    h = height;
+    pixels = malloc(length);
+    memcpy(pixels, data, length);
+
+
+    env->ReleaseByteArrayElements(data_, data, 0);
 }
