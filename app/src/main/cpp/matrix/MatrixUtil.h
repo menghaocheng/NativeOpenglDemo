@@ -6,6 +6,8 @@
 #define NATIVEOPENGLDEMO_MATRIXUTIL_H
 
 
+#include <math.h>
+
 static void initMatrix(float *matrix)
 {
     for(int i = 0; i < 16; i++)
@@ -17,6 +19,17 @@ static void initMatrix(float *matrix)
             matrix[i] = 0;
         }
     }
+}
+
+static void rotateMatrix(double angle, float *matrix)
+{
+    angle = angle * (M_PI / 180.0);
+
+    matrix[0] = cos(angle);
+    matrix[1] = -sin(angle);
+    matrix[4] = sin(angle);
+    matrix[5] = cos(angle);
+
 }
 
 
