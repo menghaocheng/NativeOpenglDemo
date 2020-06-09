@@ -5,6 +5,7 @@
 #include "android/native_window_jni.h"
 #include "egl/WlEglThread.h"
 #include "shaderutil/WlShaderUtil.h"
+#include "matrix/MatrixUtil.h"
 
 ANativeWindow *nativeWindow = NULL;
 WlEglThread *wlEglThread = NULL;
@@ -13,9 +14,10 @@ WlEglThread *wlEglThread = NULL;
 const char *vertex = "attribute vec4 v_Position;\n"
                      "attribute vec2 f_Position;\n"
                      "varying vec2 ft_Position;\n"
+                     "uniform mat4 u_Matrix;\n"
                      "void main() {\n"
                      "    ft_Position = f_Position;\n"
-                     "    gl_Position = v_Position;\n"
+                     "    gl_Position = v_Position * u_Matrix;\n"
                      "}";
 
 
@@ -31,6 +33,7 @@ GLint vPosition;
 GLint fPosition;
 GLint sampler;
 GLuint textureId;
+GLint u_matrix;
 
 
 int w;
@@ -54,6 +57,8 @@ float fragments[] ={
         0,0
 };
 
+float matrix[16];
+
 
 
 void callback_SurfaceCrete(void *ctx)
@@ -63,9 +68,23 @@ void callback_SurfaceCrete(void *ctx)
 
     program = createProgrm(vertex, fragment);
     LOGD("opengl program is %d", program);
-    vPosition = glGetAttribLocation(program, "v_Position");//∂•µ„◊¯±Í
-    fPosition = glGetAttribLocation(program, "f_Position");//Œ∆¿Ì◊¯±Í
-    sampler = glGetUniformLocation(program, "sTexture");//2DŒ∆¿Ì
+    vPosition = glGetAttribLocation(program, "v_Position");//È°∂ÁÇπÂùêÊ†á
+    fPosition = glGetAttribLocation(program, "f_Position");//Á∫πÁêÜÂùêÊ†á
+    sampler = glGetUniformLocation(program, "sTexture");//2DÁ∫πÁêÜ
+    u_matrix = glGetUniformLocation(program, "u_Matrix");
+
+    for(int i = 0; i < 16; i++)
+    {
+        LOGE("%f", matrix[i]);
+    }
+    LOGD("======");
+    initMatrix(matrix);
+
+    for(int i = 0; i < 16; i++)
+    {
+        LOGE("%f", matrix[i]);
+    }
+
 
     glGenTextures(1, &textureId);
 
@@ -98,6 +117,10 @@ void callback_SurfaceDraw(void *ctx)
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(program);
+
+    glUniformMatrix4fv(u_matrix, 1, GL_FALSE, matrix);
+
+
 
     glActiveTexture(GL_TEXTURE5);
     glUniform1i(sampler, 5);
