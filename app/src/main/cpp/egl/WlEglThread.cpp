@@ -68,6 +68,9 @@ void * eglThreadImpl(void *context)
             }
             if(wlEglThread->isExit)
             {
+
+                wlEglThread->onDestroy(wlEglThread->onDestroyctx);
+
                 wlEglHelper->destoryEgl();
                 delete wlEglHelper;
                 wlEglHelper = NULL;
@@ -143,4 +146,9 @@ void WlEglThread::onSurfaceChangeFilter() {
     isChangeFilter = true;
     notifyRender();
 
+}
+
+void WlEglThread::callBAckOnDestroy(WlEglThread::OnDestroy onDestroy, void *ctx) {
+    this->onDestroy = onDestroy;
+    this->onDestroyctx = ctx;
 }

@@ -51,15 +51,28 @@ void callback_SurfaceChangeFilter(int width, int height, void *ctx)
         if(wlOpengl->baseOpengl != NULL)
         {
             wlOpengl->baseOpengl->destroy();
+            wlOpengl->baseOpengl->destorySorce();
             delete wlOpengl->baseOpengl;
             wlOpengl->baseOpengl = NULL;
         }
-        LOGE("3 ¡¢width %d height %d %d %d", width, height, wlOpengl->pic_width, wlOpengl->pic_height);
+        LOGE("3 ã€width %d height %d %d %d", width, height, wlOpengl->pic_width, wlOpengl->pic_height);
         wlOpengl->baseOpengl = new WlFilterTwo();
         wlOpengl->baseOpengl->onCreate();
         wlOpengl->baseOpengl->onChange(width, height);
         wlOpengl->baseOpengl->setPilex(wlOpengl->pilex, wlOpengl->pic_width, wlOpengl->pic_height, 0);
         wlOpengl->wlEglThread->notifyRender();
+    }
+}
+
+void callback_SurfaceDestory(void *ctx)
+{
+    WlOpengl *wlOpengl = static_cast<WlOpengl *>(ctx);
+    if(wlOpengl != NULL)
+    {
+        if(wlOpengl->baseOpengl != NULL)
+        {
+            wlOpengl->baseOpengl->destroy();
+        }
     }
 }
 
@@ -81,6 +94,7 @@ void WlOpengl::onCreateSurface(JNIEnv *env, jobject surface) {
     wlEglThread->callBackOnChange(callback_SurfacChange, this);
     wlEglThread->callBackOnDraw(callback_SurfaceDraw, this);
     wlEglThread->callBackOnChangeFilter(callback_SurfaceChangeFilter, this);
+    wlEglThread->callBAckOnDestroy(callback_SurfaceDestory, this);
 
     baseOpengl = new WlFilterOne();
 
@@ -93,7 +107,7 @@ void WlOpengl::onChangeSurface(int width, int height) {
 
     if(wlEglThread != NULL)
     {
-        LOGE("2 ¡¢width %d height %d", width, height);
+        LOGE("2 ã€width %d height %d", width, height);
         if(baseOpengl != NULL)
         {
             baseOpengl->surface_width = width;
@@ -113,7 +127,7 @@ void WlOpengl::onDestorySurface() {
     }
     if(baseOpengl != NULL)
     {
-        baseOpengl->destroy();
+        baseOpengl->destorySorce();
         delete baseOpengl;
         baseOpengl = NULL;
     }

@@ -47,6 +47,11 @@ public:
     OnChangeFilter onChangeFilter;
     void *onChangeFilterCtx;
 
+    typedef void(*OnDestroy)(void *);
+    OnDestroy onDestroy;
+    void *onDestroyctx;
+
+
     int renderType = OPENGL_RENDER_AUTO;
 
     pthread_mutex_t pthread_mutex;
@@ -71,12 +76,13 @@ public:
 
     void callBackOnChangeFilter(OnChangeFilter onChangeFilter, void *ctx);
 
+    void callBAckOnDestroy(OnDestroy onDestroy, void *ctx);
+
     void setRenderType(int renderType);
 
     void notifyRender();
 
     void destroy();
-
 
 
 

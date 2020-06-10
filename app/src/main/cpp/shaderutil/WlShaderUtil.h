@@ -9,22 +9,28 @@
 
 static int loadShaders(int shaderType, const char *code)
 {
-    int shader = glCreateShader(shaderType);
+    GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &code, 0);
     glCompileShader(shader);
     return  shader;
 }
 
-static int createProgrm(const char *vertex , const char * fragment)
+static int createProgrm(const char *vertex , const char * fragment, GLuint *v_shader, GLuint *f_shader)
 {
-    int vertexShader = loadShaders(GL_VERTEX_SHADER, vertex);
-    int fragmentShader = loadShaders(GL_FRAGMENT_SHADER, fragment);
+    GLuint vertexShader = loadShaders(GL_VERTEX_SHADER, vertex);
+    GLuint fragmentShader = loadShaders(GL_FRAGMENT_SHADER, fragment);
     int program = glCreateProgram();
     glAttachShader(program, vertexShader);
     glAttachShader(program, fragmentShader);
     glLinkProgram(program);
+
+    *v_shader = vertexShader;
+    *f_shader = fragmentShader;
+
     return program;
 }
+
+
 
 
 

@@ -36,6 +36,8 @@ public:
 
     void destroy();
 
+    void destorySorce();
+
     void setMatrix(int width, int height);
 
     void setPilex(void *data, int width, int height, int length);

@@ -25,7 +25,7 @@ Java_com_ywl5320_opengl_NativeOpengl_surfaceChange(JNIEnv *env, jobject instance
 
     if(wlOpengl != NULL)
     {
-        LOGE("1 ¡¢width %d height %d", width, height);
+        LOGE("1 ã€width %d height %d", width, height);
         wlOpengl->onChangeSurface(width, height);
     }
 
