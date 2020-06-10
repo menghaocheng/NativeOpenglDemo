@@ -17,4 +17,6 @@ public class NativeOpengl {
 
     public native void surfaceDestroy();
 
+    public native void surfaceChangeFilter();
+
 }

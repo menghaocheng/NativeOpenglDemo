@@ -33,7 +33,6 @@ void callback_SurfacChange(int width, int height, void *ctx)
 
 void callback_SurfaceDraw(void *ctx)
 {
-
     WlOpengl *wlOpengl = static_cast<WlOpengl *>(ctx);
     if(wlOpengl != NULL)
     {
@@ -41,6 +40,26 @@ void callback_SurfaceDraw(void *ctx)
         {
             wlOpengl->baseOpengl->draw();
         }
+    }
+}
+
+void callback_SurfaceChangeFilter(int width, int height, void *ctx)
+{
+    WlOpengl *wlOpengl = static_cast<WlOpengl *>(ctx);
+    if(wlOpengl != NULL)
+    {
+        if(wlOpengl->baseOpengl != NULL)
+        {
+            wlOpengl->baseOpengl->destroy();
+            delete wlOpengl->baseOpengl;
+            wlOpengl->baseOpengl = NULL;
+        }
+        LOGE("3 ¡¢width %d height %d %d %d", width, height, wlOpengl->pic_width, wlOpengl->pic_height);
+        wlOpengl->baseOpengl = new WlFilterTwo();
+        wlOpengl->baseOpengl->onCreate();
+        wlOpengl->baseOpengl->onChange(width, height);
+        wlOpengl->baseOpengl->setPilex(wlOpengl->pilex, wlOpengl->pic_width, wlOpengl->pic_height, 0);
+        wlOpengl->wlEglThread->notifyRender();
     }
 }
 
@@ -61,7 +80,7 @@ void WlOpengl::onCreateSurface(JNIEnv *env, jobject surface) {
     wlEglThread->callBackOnCreate(callback_SurfaceCrete, this);
     wlEglThread->callBackOnChange(callback_SurfacChange, this);
     wlEglThread->callBackOnDraw(callback_SurfaceDraw, this);
-
+    wlEglThread->callBackOnChangeFilter(callback_SurfaceChangeFilter, this);
 
     baseOpengl = new WlFilterOne();
 
@@ -74,6 +93,7 @@ void WlOpengl::onChangeSurface(int width, int height) {
 
     if(wlEglThread != NULL)
     {
+        LOGE("2 ¡¢width %d height %d", width, height);
         if(baseOpengl != NULL)
         {
             baseOpengl->surface_width = width;
@@ -102,6 +122,12 @@ void WlOpengl::onDestorySurface() {
         ANativeWindow_release(nativeWindow);
         nativeWindow = NULL;
     }
+
+    if(pilex != NULL)
+    {
+        free(pilex);
+        pilex = NULL;
+    }
 }
 
 void WlOpengl::setPilex(void *data, int width, int height, int length) {
@@ -121,4 +147,11 @@ void WlOpengl::setPilex(void *data, int width, int height, int length) {
 
 
 
+}
+
+void WlOpengl::onChangeFilter() {
+    if(wlEglThread != NULL)
+    {
+        wlEglThread->onSurfaceChangeFilter();
+    }
 }

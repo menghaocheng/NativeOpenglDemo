@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ywl5320.opengl.NativeOpengl;
@@ -36,5 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 nativeOpengl.imgData(bitmap.getWidth(), bitmap.getHeight(), pixels.length, pixels);
             }
         });
+    }
+
+    public void changeFilter(View view) {
+        if(nativeOpengl != null)
+        {
+            nativeOpengl.surfaceChangeFilter();
+        }
     }
 }

@@ -25,6 +25,7 @@ Java_com_ywl5320_opengl_NativeOpengl_surfaceChange(JNIEnv *env, jobject instance
 
     if(wlOpengl != NULL)
     {
+        LOGE("1 ¡¢width %d height %d", width, height);
         wlOpengl->onChangeSurface(width, height);
     }
 
@@ -52,6 +53,18 @@ Java_com_ywl5320_opengl_NativeOpengl_surfaceDestroy(JNIEnv *env, jobject instanc
         wlOpengl->onDestorySurface();
         delete  wlOpengl;
         wlOpengl = NULL;
+    }
+
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_ywl5320_opengl_NativeOpengl_surfaceChangeFilter(JNIEnv *env, jobject instance) {
+
+    // TODO
+    if(wlOpengl != NULL)
+    {
+        wlOpengl->onChangeFilter();
     }
 
 }

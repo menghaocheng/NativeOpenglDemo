@@ -10,6 +10,7 @@
 #include "android/native_window_jni.h"
 #include "WlBaseOpengl.h"
 #include "WlFilterOne.h"
+#include "WlFilterTwo.h"
 
 class WlOpengl {
 
@@ -33,6 +34,8 @@ public:
     void onDestorySurface();
 
     void setPilex(void *data, int width, int height, int length);
+
+    void onChangeFilter();
 
 };
 
