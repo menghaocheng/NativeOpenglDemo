@@ -80,8 +80,9 @@ void callback_SurfaceCrete(void *ctx)
     LOGD("======");
     initMatrix(matrix);
 //    rotateMatrix(-90, matrix);
-    //scaleMatrix(2, matrix);
-    transMatrix(0.5, 0, matrix);
+//    scaleMatrix(2, matrix);
+//    transMatrix(0.5, 0, matrix);
+//    orthoM(-3, 1, -1, 1, matrix);
 
     for(int i = 0; i < 16; i++)
     {
@@ -105,11 +106,22 @@ void callback_SurfaceCrete(void *ctx)
 
 }
 
-void callback_SurfacChange(int w, int h, void *ctx)
+void callback_SurfacChange(int width, int height, void *ctx)
 {
     LOGD("callback_SurfacChange");
     WlEglThread *wlEglThread = static_cast<WlEglThread *>(ctx);
-    glViewport(0, 0, w, h);
+    glViewport(0, 0, width, height);
+
+    float screan_r = 1.0 * width / height;
+    float picture_r = 1.0 * w / h;
+    if(screan_r > picture_r) //图片宽度缩放
+    {
+        float r = width / (1.0 *height / h * w);
+        orthoM(-r, r, -1, 1, matrix);
+    } else { //图片高度缩放
+        float r = height/(1.0 * width / w * h);
+        orthoM(-1, 1, -r, r, matrix);
+    }
 }
 
 void callback_SurfaceDraw(void *ctx)

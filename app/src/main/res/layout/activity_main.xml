@@ -9,6 +9,6 @@
     <com.ywl5320.opengl.WlSurfaceView
         android:id="@+id/wlsurfaceview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="200dp" />
 
 </RelativeLayout>
