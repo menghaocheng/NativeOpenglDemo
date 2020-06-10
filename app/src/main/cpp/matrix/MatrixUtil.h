@@ -38,6 +38,11 @@ static void scaleMatrix(double scale, float *matrix)
     matrix[5] = scale;
 }
 
+static void transMatrix(double x, double y, float *matrix)
+{
+    matrix[3] = x,
+    matrix[7] = y;
+}
 
 
 #endif //NATIVEOPENGLDEMO_MATRIXUTIL_H
