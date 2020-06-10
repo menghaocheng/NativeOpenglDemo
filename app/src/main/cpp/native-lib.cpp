@@ -79,7 +79,8 @@ void callback_SurfaceCrete(void *ctx)
     }
     LOGD("======");
     initMatrix(matrix);
-    rotateMatrix(-90, matrix);
+//    rotateMatrix(-90, matrix);
+    scaleMatrix(2, matrix);
 
     for(int i = 0; i < 16; i++)
     {

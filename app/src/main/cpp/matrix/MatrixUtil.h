@@ -32,5 +32,12 @@ static void rotateMatrix(double angle, float *matrix)
 
 }
 
+static void scaleMatrix(double scale, float *matrix)
+{
+    matrix[0] = scale;
+    matrix[5] = scale;
+}
+
+
 
 #endif //NATIVEOPENGLDEMO_MATRIXUTIL_H
