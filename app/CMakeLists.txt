@@ -12,6 +12,9 @@ add_library( # Sets the name of the library.
              src/main/cpp/native-lib.cpp
              src/main/cpp/egl/WlEglHelper.cpp
              src/main/cpp/egl/WlEglThread.cpp
+             src/main/cpp/opengl/WlBaseOpengl.cpp
+        src/main/cpp/opengl/WlFilterOne.cpp
+        src/main/cpp/opengl/WlOpengl.cpp
         )
 
 target_link_libraries( # Specifies the target library.

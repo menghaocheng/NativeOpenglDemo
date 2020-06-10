@@ -66,6 +66,8 @@ public:
 
     void notifyRender();
 
+    void destroy();
+
 
 
 };

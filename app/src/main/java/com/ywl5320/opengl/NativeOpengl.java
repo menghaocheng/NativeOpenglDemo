@@ -15,4 +15,6 @@ public class NativeOpengl {
 
     public native void imgData(int w, int h, int length, byte[] data);
 
+    public native void surfaceDestroy();
+
 }
