@@ -12,11 +12,17 @@ import com.ywl5320.opengl.NativeOpengl;
 import com.ywl5320.opengl.WlSurfaceView;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private WlSurfaceView wlSurfaceView;
     private NativeOpengl nativeOpengl;
+    byte[] pixels;
+
+    private List<Integer> imgs = new ArrayList<>();
+    private int index = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,24 +31,49 @@ public class MainActivity extends AppCompatActivity {
         wlSurfaceView = findViewById(R.id.wlsurfaceview);
         nativeOpengl = new NativeOpengl();
         wlSurfaceView.setNativeOpengl(nativeOpengl);
+
+        imgs.add(R.drawable.mingren);
+        imgs.add(R.drawable.img_1);
+        imgs.add(R.drawable.img_2);
+        imgs.add(R.drawable.img_3);
+
         wlSurfaceView.setOnSurfaceListener(new WlSurfaceView.OnSurfaceListener() {
             @Override
             public void init() {
-                final Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.mingren);
-                ByteBuffer fcbuffer = ByteBuffer.allocate(bitmap.getHeight() * bitmap.getWidth() * 4);
-                bitmap.copyPixelsToBuffer(fcbuffer);
-                fcbuffer.flip();
-                byte[] pixels = fcbuffer.array();
-                nativeOpengl.imgData(bitmap.getWidth(), bitmap.getHeight(), pixels.length, pixels);
+                readPliex();
             }
         });
     }
+
 
     public void changeFilter(View view) {
         if(nativeOpengl != null)
         {
             nativeOpengl.surfaceChangeFilter();
         }
+    }
+
+    public void changeTexture(View view) {
+        readPliex();
+    }
+
+    private void readPliex() {
+        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+                getImgeIds());
+        ByteBuffer fcbuffer = ByteBuffer.allocate(bitmap.getHeight() * bitmap.getWidth() * 4);
+        bitmap.copyPixelsToBuffer(fcbuffer);
+        fcbuffer.flip();
+        byte[] pixels = fcbuffer.array();
+        nativeOpengl.imgData(bitmap.getWidth(), bitmap.getHeight(), pixels.length, pixels);
+    }
+
+    private int getImgeIds()
+    {
+        index ++;
+        if(index >= imgs.size())
+        {
+            index = 0;
+        }
+        return imgs.get(index);
     }
 }
