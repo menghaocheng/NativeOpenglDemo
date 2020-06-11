@@ -161,12 +161,10 @@ void WlFilterYUV::setMatrix(int width, int height) {
 
         if(screen_r > picture_r) //图片宽度缩放
         {
-
             float r = width / (1.0 * height / yuv_height * yuv_wdith);
             orthoM(-r, r, -1, 1, matrix);
 
         } else{//图片高度缩放
-
             float r = height / (1.0 * width / yuv_wdith * yuv_height);
             orthoM(-1, 1, -r, r, matrix);
         }

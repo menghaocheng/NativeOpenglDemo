@@ -13,10 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class YUVplayer extends AppCompatActivity {
-
+    private static final String TAG = "YUVplayer";
     private WlSurfaceView wlSurfaceView;
     private NativeOpengl nativeOpengl;
-
     private FileInputStream fis;
 
     private boolean isexit = true;
@@ -30,6 +29,7 @@ public class YUVplayer extends AppCompatActivity {
         wlSurfaceView.setNativeOpengl(nativeOpengl);
     }
 
+
     public void play(View view) {
         if(isexit)
         {
@@ -37,10 +37,10 @@ public class YUVplayer extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    int w = 854;
-                    int h = 480;
+                    int w = 864;
+                    int h = 486;
                     try {
-                        fis = new FileInputStream(new File("/sdcard/Movies/blr.yuv"));
+                        fis = new FileInputStream(new File("/sdcard/Movies/864x486.yuv"));
                         byte[]y = new byte[w * h];
                         byte[]u = new byte[w * h / 4];
                         byte[]v = new byte[w * h / 4];

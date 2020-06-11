@@ -50,7 +50,7 @@ void * eglThreadImpl(void *context)
             }
 
             //
-            LOGD("draw");
+            //LOGD("draw");
             if(wlEglThread->isStart)
             {
                 wlEglThread->onDraw(wlEglThread->onDrawCtx);

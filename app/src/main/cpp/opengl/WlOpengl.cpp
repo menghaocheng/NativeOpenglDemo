@@ -96,6 +96,7 @@ void WlOpengl::onCreateSurface(JNIEnv *env, jobject surface) {
     wlEglThread->callBackOnChangeFilter(callback_SurfaceChangeFilter, this);
     wlEglThread->callBAckOnDestroy(callback_SurfaceDestory, this);
 
+//    baseOpengl = new WlFilterOne();
     baseOpengl = new WlFilterYUV();
 
     wlEglThread->onSurfaceCreate(nativeWindow);
