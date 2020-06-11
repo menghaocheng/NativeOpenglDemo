@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     public void changeFilter(View view) {
+
         if(nativeOpengl != null)
         {
             nativeOpengl.surfaceChangeFilter();
@@ -57,13 +57,14 @@ public class MainActivity extends AppCompatActivity {
         readPliex();
     }
 
-    private void readPliex() {
+    private void readPliex()
+    {
         final Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
                 getImgeIds());
         ByteBuffer fcbuffer = ByteBuffer.allocate(bitmap.getHeight() * bitmap.getWidth() * 4);
         bitmap.copyPixelsToBuffer(fcbuffer);
         fcbuffer.flip();
-        byte[] pixels = fcbuffer.array();
+        pixels = fcbuffer.array();
         nativeOpengl.imgData(bitmap.getWidth(), bitmap.getHeight(), pixels.length, pixels);
     }
 
@@ -76,4 +77,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return imgs.get(index);
     }
+
 }

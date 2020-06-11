@@ -13,19 +13,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="horizontal">
         <Button
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:onClick="changeFilter"
-            android:text="切换滤镜"/>
+            android:onClick="play"
+            android:layout_weight="1"
+            android:text="播放"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:onClick="changeTexture"
-            android:text="切换纹理"/>
+            android:onClick="stop"
+            android:layout_weight="1"
+            android:text="停止"/>
     </LinearLayout>
 
 </RelativeLayout>

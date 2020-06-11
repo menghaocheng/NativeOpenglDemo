@@ -16,6 +16,7 @@ add_library( # Sets the name of the library.
         src/main/cpp/opengl/WlFilterOne.cpp
         src/main/cpp/opengl/WlOpengl.cpp
         src/main/cpp/opengl/WlFilterTwo.cpp
+        src/main/cpp/opengl/WlFilterYUV.cpp
         )
 
 target_link_libraries( # Specifies the target library.
